@@ -21,8 +21,10 @@
     <string name="gps_status_test_mode">GPS: Parallel Ground-Truth (Test Mode)</string>
 
     <string name="mock_provider_active">Mock Location: Active</string>
-    <string name="mock_provider_inactive">Mock Location: Inactive</string>
-    <string name="mock_provider_warning">Set as Mock Location app in Developer Options</string>
+    <string name="mock_provider_inactive">Mock Location: Standalone Mode</string>
+    <string name="mock_provider_warning">Mock Location not set in Developer Options (Optional: only needed to share with third-party navigation apps. Route recording works completely standalone!)</string>
+    <string name="btn_skip_gps">Start Now (Skip GPS)</string>
+    <string name="status_searching_signal">Searching for GPS satellites…</string>
 
     <string name="metric_speed">Speed</string>
     <string name="metric_course">Course</string>

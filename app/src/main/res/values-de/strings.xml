@@ -21,8 +21,10 @@
     <string name="gps_status_test_mode">GPS: Parallele Referenz (Testmodus)</string>
 
     <string name="mock_provider_active">Mock-Standort: Aktiv</string>
-    <string name="mock_provider_inactive">Mock-Standort: Inaktiv</string>
-    <string name="mock_provider_warning">In Entwickleroptionen als Mock-Standort-App auswählen</string>
+    <string name="mock_provider_inactive">Mock-Standort: Eigenständiger Modus</string>
+    <string name="mock_provider_warning">Mock-Standort nicht in Entwickleroptionen gesetzt (Optional: nur nötig zur Weitergabe an externe Apps wie Google Maps. Streckenaufzeichnung funktioniert komplett eigenständig!)</string>
+    <string name="btn_skip_gps">Jetzt ohne GPS starten</string>
+    <string name="status_searching_signal">Suche GPS-Satellitensignal…</string>
 
     <string name="metric_speed">Geschwindigkeit</string>
     <string name="metric_course">Kurs</string>

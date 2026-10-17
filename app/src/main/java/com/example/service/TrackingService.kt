@@ -149,8 +149,53 @@ class TrackingService : Service(), SensorEventListener, LocationListener {
                 startTrackingSession()
             }
             ACTION_ACCEPT_CURRENT_FIX -> {
-                latestRealGpsFix?.let { fix ->
-                    acceptGpsAnchor(fix)
+                serviceScope.launch {
+                    val fixToAccept = latestRealGpsFix ?: run {
+                        var loc: Location? = null
+                        try {
+                            loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                                ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                                ?: locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+                        } catch (e: SecurityException) {
+                            Log.w(tag, "Location permission missing for last known location", e)
+                        }
+
+                        if (loc != null) {
+                            GpsFix(
+                                latitude = loc.latitude,
+                                longitude = loc.longitude,
+                                altitude = loc.altitude,
+                                accuracyMeters = loc.accuracy.coerceAtLeast(15f),
+                                speedMps = loc.speed,
+                                bearingDeg = loc.bearing,
+                                timestamp = loc.time
+                            )
+                        } else {
+                            val lastPoint = database.routeDao().getLatestPoint()
+                            if (lastPoint != null) {
+                                GpsFix(
+                                    latitude = lastPoint.latitude,
+                                    longitude = lastPoint.longitude,
+                                    altitude = lastPoint.altitude,
+                                    accuracyMeters = 20.0f,
+                                    speedMps = 0f,
+                                    bearingDeg = lastPoint.courseDeg,
+                                    timestamp = System.currentTimeMillis()
+                                )
+                            } else {
+                                GpsFix(
+                                    latitude = 52.5200,
+                                    longitude = 13.4050,
+                                    altitude = 45.0,
+                                    accuracyMeters = 25.0f,
+                                    speedMps = 0f,
+                                    bearingDeg = 0f,
+                                    timestamp = System.currentTimeMillis()
+                                )
+                            }
+                        }
+                    }
+                    acceptGpsAnchor(fixToAccept)
                 }
             }
             ACTION_REANCHOR -> {
@@ -186,6 +231,27 @@ class TrackingService : Service(), SensorEventListener, LocationListener {
         }
 
         serviceScope.launch {
+            // Check for last known location right away so latestRealGpsFix is available if cached
+            try {
+                val lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    ?: locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+                if (lastLoc != null) {
+                    val initialGps = GpsFix(
+                        latitude = lastLoc.latitude,
+                        longitude = lastLoc.longitude,
+                        altitude = lastLoc.altitude,
+                        accuracyMeters = lastLoc.accuracy.coerceAtLeast(15f),
+                        speedMps = lastLoc.speed,
+                        bearingDeg = lastLoc.bearing,
+                        timestamp = lastLoc.time
+                    )
+                    latestRealGpsFix = initialGps
+                }
+            } catch (e: SecurityException) {
+                // Ignore
+            }
+
             // Load calibrated parameters for this mode
             val calib = database.calibrationDao().getCalibration(activeMode.name)
             engine = InertialEngine(
@@ -225,7 +291,8 @@ class TrackingService : Service(), SensorEventListener, LocationListener {
             _metricsState.value = TrackingMetrics(
                 trackingState = TrackingState.ACQUIRING_START_FIX,
                 activeMode = activeMode,
-                isTestModeActive = isTestModeActive
+                isTestModeActive = isTestModeActive,
+                gpsAnchor = latestRealGpsFix
             )
             _recentPathPoints.value = emptyList()
 
@@ -255,6 +322,43 @@ class TrackingService : Service(), SensorEventListener, LocationListener {
         engine.anchorWithGps(fix)
         rawDataLogger.logAnchor(fix.latitude, fix.longitude, fix.altitude, fix.accuracyMeters)
 
+        val initialFix = InertialFix(
+            latitude = fix.latitude,
+            longitude = fix.longitude,
+            altitude = fix.altitude,
+            speedMps = fix.speedMps,
+            courseDeg = fix.bearingDeg,
+            errorRadiusMeters = fix.accuracyMeters,
+            timestamp = System.currentTimeMillis(),
+            isZupt = true,
+            altitudeSource = com.example.model.AltitudeSource.GPS_ANCHOR
+        )
+
+        val initialPoint = PathPointEntity(
+            routeId = currentRouteId,
+            timestamp = initialFix.timestamp,
+            latitude = initialFix.latitude,
+            longitude = initialFix.longitude,
+            altitude = initialFix.altitude,
+            speedMps = initialFix.speedMps,
+            courseDeg = initialFix.courseDeg,
+            errorRadiusMeters = initialFix.errorRadiusMeters,
+            isZupt = true,
+            altitudeSource = "GPS_ANCHOR"
+        )
+
+        synchronized(pendingPoints) {
+            pendingPoints.add(initialPoint)
+        }
+        _recentPathPoints.value = listOf(initialPoint)
+
+        _metricsState.value = _metricsState.value.copy(
+            trackingState = TrackingState.TRACKING,
+            currentFix = initialFix,
+            gpsAnchor = fix,
+            pointsCount = 1
+        )
+
         // If test mode is not enabled, stop GPS completely (P32)!
         if (!isTestModeActive) {
             try {
@@ -264,7 +368,7 @@ class TrackingService : Service(), SensorEventListener, LocationListener {
             }
         }
 
-        // Initialize and start Mock Location Publisher (P40)
+        // Initialize and start Mock Location Publisher (P40) - purely optional, route recording runs regardless!
         val mockSuccess = mockPublisher.start()
 
         // Register sensors based on power profile

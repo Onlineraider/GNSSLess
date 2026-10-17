@@ -39,6 +39,9 @@ interface RouteDao {
 
     @Query("SELECT * FROM path_points WHERE routeId = :routeId ORDER BY timestamp ASC")
     fun getPointsForRouteFlow(routeId: Long): Flow<List<PathPointEntity>>
+
+    @Query("SELECT * FROM path_points ORDER BY timestamp DESC LIMIT 1")
+    suspend fun getLatestPoint(): PathPointEntity?
 }
 
 @Dao

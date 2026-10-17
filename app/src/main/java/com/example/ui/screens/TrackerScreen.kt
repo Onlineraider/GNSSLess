@@ -43,6 +43,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -92,6 +93,7 @@ fun TrackerScreen(
     val isOfflineTilesMode by viewModel.isOfflineTilesMode.collectAsStateWithLifecycle()
 
     var recenterTrigger by remember { mutableStateOf(false) }
+    var isMockBannerDismissed by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -135,10 +137,10 @@ fun TrackerScreen(
             }
         }
 
-        // Mock Location Warning Banner if not enabled in Developer Options (P42)
-        AnimatedVisibility(visible = !isMockAppSet) {
+        // Mock Location Informational Banner (Optional)
+        AnimatedVisibility(visible = !isMockAppSet && !isMockBannerDismissed) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = AeroAmberGps.copy(alpha = 0.15f)),
+                colors = CardDefaults.cardColors(containerColor = AeroCyanPrimary.copy(alpha = 0.12f)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
@@ -147,23 +149,20 @@ fun TrackerScreen(
                     modifier = Modifier.padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Default.Warning, contentDescription = null, tint = AeroAmberGps)
+                    Icon(Icons.Default.Sensors, contentDescription = null, tint = AeroCyanLight)
                     Spacer(modifier = Modifier.width(8.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             stringResource(R.string.mock_provider_warning),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                    OutlinedButton(
-                        onClick = {
-                            context.startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                        },
-                        modifier = Modifier.testTag("open_dev_options_btn")
+                    TextButton(
+                        onClick = { isMockBannerDismissed = true },
+                        modifier = Modifier.testTag("dismiss_mock_banner_btn")
                     ) {
-                        Text("Setup", fontSize = 11.sp)
+                        Text("OK", fontSize = 11.sp)
                     }
                 }
             }
@@ -426,24 +425,36 @@ private fun ActionDock(
                 }
 
                 TrackingState.ACQUIRING_START_FIX -> {
+                    val anchor = metrics.gpsAnchor
                     Column(modifier = Modifier.weight(1f)) {
-                        val currentAcc = metrics.gpsAnchor?.accuracyMeters ?: 99f
-                        Text(
-                            text = "Locking GPS (<15m): current ±${currentAcc.toInt()}m",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                        if (anchor != null) {
+                            Text(
+                                text = "GPS: ±${anchor.accuracyMeters.toInt()}m",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = AeroCyanLight
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.status_searching_signal),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
                     }
                     Button(
                         onClick = onAcceptFixNow,
-                        colors = ButtonDefaults.buttonColors(containerColor = AeroAmberGps),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (anchor != null) AeroCyanPrimary else AeroAmberGps
+                        ),
                         modifier = Modifier
                             .height(48.dp)
                             .testTag("accept_fix_now_button")
                     ) {
                         Icon(Icons.Default.Check, contentDescription = null)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text(stringResource(R.string.btn_accept_fix_now), fontSize = 13.sp)
+                        val btnText = if (anchor != null) stringResource(R.string.btn_accept_fix_now) else stringResource(R.string.btn_skip_gps)
+                        Text(btnText, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                     }
                 }
 
