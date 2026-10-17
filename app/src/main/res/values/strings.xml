@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">Inertial Tracker</string>
+    <string name="tagline">Pure Inertial Navigation &amp; Mock Location</string>
+
+    <!-- Navigation Tabs -->
+    <string name="nav_track">Tracker</string>
+    <string name="nav_routes">Routes</string>
+    <string name="nav_calibrate">Calibrate</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- State & Metrics -->
+    <string name="status_idle">Ready to Track</string>
+    <string name="status_acquiring_fix">Waiting for Start GPS Fix…</string>
+    <string name="status_tracking">Inertial Tracking Active</string>
+    <string name="status_paused">Tracking Paused</string>
+    <string name="status_stopped">Recording Saved</string>
+
+    <string name="gps_status_off">GPS: Off (Pure Inertial)</string>
+    <string name="gps_status_searching">GPS: Acquiring Start Fix…</string>
+    <string name="gps_status_locked">GPS: Initial Fix Locked</string>
+    <string name="gps_status_test_mode">GPS: Parallel Ground-Truth (Test Mode)</string>
+
+    <string name="mock_provider_active">Mock Location: Active</string>
+    <string name="mock_provider_inactive">Mock Location: Inactive</string>
+    <string name="mock_provider_warning">Set as Mock Location app in Developer Options</string>
+
+    <string name="metric_speed">Speed</string>
+    <string name="metric_course">Course</string>
+    <string name="metric_altitude">Altitude</string>
+    <string name="metric_error_radius">Est. Error Radius</string>
+    <string name="metric_distance">Distance</string>
+    <string name="metric_duration">Duration</string>
+    <string name="metric_max_speed">Max Speed</string>
+    <string name="metric_elevation_gain">Elev. Gain</string>
+    <string name="metric_barometer">Barometer Active</string>
+    <string name="metric_accel_alt">Accel Altitude (Approx)</string>
+
+    <!-- Actions -->
+    <string name="btn_start">Start Tracking</string>
+    <string name="btn_stop">Stop &amp; Save</string>
+    <string name="btn_pause">Pause</string>
+    <string name="btn_resume">Resume</string>
+    <string name="btn_reanchor">Re-anchor with GPS</string>
+    <string name="btn_accept_fix_now">Accept Current Fix Now</string>
+    <string name="btn_center_map">Recenter View</string>
+    <string name="btn_export">Export Route</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_rename">Rename</string>
+    <string name="btn_details">View Details</string>
+    <string name="btn_calibrate_now">Start Calibration</string>
+
+    <!-- Modes -->
+    <string name="mode_title">Transport Mode</string>
+    <string name="mode_walking">Walking (Hand/Pocket)</string>
+    <string name="mode_car">Car (Fixed Mount)</string>
+    <string name="mode_bicycle_fixed">Bicycle (Handlebar Mount)</string>
+    <string name="mode_bicycle_loose">Bicycle (Pocket/Bag)</string>
+    <string name="mode_transit_fixed">Train/Bus/Tram (Resting)</string>
+    <string name="mode_transit_loose">Train/Bus/Tram (Pocket/Bag)</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_power_profile">Battery &amp; Sensor Rate</string>
+    <string name="profile_max_accuracy">Maximum Accuracy (100Hz+, 5Hz Mock)</string>
+    <string name="profile_power_saving">Power Saving (30Hz, 1Hz Mock)</string>
+    <string name="settings_test_mode">Test Mode (GNSS Comparison)</string>
+    <string name="settings_test_mode_desc">Records real GPS in parallel without feeding estimation, to measure drift and verify error radius.</string>
+    <string name="settings_mock_rate">Mock Publish Rate</string>
+    <string name="settings_tile_import">Offline Map Tiles</string>
+    <string name="settings_tile_import_desc">Import folder or ZIP of OpenStreetMap XYZ tiles ({z}/{x}/{y}.png) for 100% offline map display.</string>
+    <string name="settings_developer_options">Open Developer Options</string>
+
+    <!-- Map & Visualization -->
+    <string name="map_mode_vector">Vector Drawing</string>
+    <string name="map_mode_offline_tiles">Offline Tile Map</string>
+    <string name="map_no_tiles_loaded">No offline tiles imported. Showing vector track on coordinate grid.</string>
+    <string name="legend_start">Start</string>
+    <string name="legend_current">Current (Est.)</string>
+    <string name="legend_gps">GPS Ground Truth</string>
+
+    <!-- Calibration Screen -->
+    <string name="calib_title">Sensor Calibration</string>
+    <string name="calib_instructions">Place the phone completely still on a flat surface. This measures gyroscope zero-bias and accelerometer scaling to minimize integration drift.</string>
+    <string name="calib_step_bias">Step 1: Measuring Static Gyroscope &amp; Accelerometer Bias…</string>
+    <string name="calib_step_done">Calibration Completed &amp; Saved!</string>
+    <string name="calib_keep_still">Keep device stationary: %1$d s remaining</string>
+
+    <!-- Evaluation & Test Mode -->
+    <string name="eval_title">Drift &amp; Error Evaluation</string>
+    <string name="eval_drift_over_time">Sensor Drift over Time (m vs sec)</string>
+    <string name="eval_drift_ratio">Drift vs Distance Traveled</string>
+    <string name="eval_error_radius_coverage">Error Radius Coverage</string>
+    <string name="eval_marked_test_recording">Test Recording (Ground Truth Logged)</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">Inertial Tracking</string>
+    <string name="notif_channel_desc">Active inertial navigation and mock location updates</string>
+    <string name="notif_running_text">Tracking active in %1$s mode • Error radius: ±%2$.0fm</string>
+</resources>

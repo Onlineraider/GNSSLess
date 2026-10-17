@@ -1,0 +1,6 @@
+{
+  "name": "Inertial Path Tracker",
+  "description": "High-precision dead-reckoning route recorder using pure on-device motion and environmental sensors with mock location provider.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

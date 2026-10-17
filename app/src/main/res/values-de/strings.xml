@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">Inertial Tracker</string>
+    <string name="tagline">Reine Trägheitsnavigation &amp; Mock-Standort</string>
+
+    <!-- Navigation Tabs -->
+    <string name="nav_track">Tracker</string>
+    <string name="nav_routes">Routen</string>
+    <string name="nav_calibrate">Kalibrierung</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <!-- State & Metrics -->
+    <string name="status_idle">Bereit zur Aufzeichnung</string>
+    <string name="status_acquiring_fix">Warte auf ersten GPS-Fix…</string>
+    <string name="status_tracking">Trägheitsnavigation aktiv</string>
+    <string name="status_paused">Aufzeichnung pausiert</string>
+    <string name="status_stopped">Aufzeichnung gespeichert</string>
+
+    <string name="gps_status_off">GPS: Aus (Reine Sensor-Navigation)</string>
+    <string name="gps_status_searching">GPS: Ermittle Startposition…</string>
+    <string name="gps_status_locked">GPS: Startposition fixiert</string>
+    <string name="gps_status_test_mode">GPS: Parallele Referenz (Testmodus)</string>
+
+    <string name="mock_provider_active">Mock-Standort: Aktiv</string>
+    <string name="mock_provider_inactive">Mock-Standort: Inaktiv</string>
+    <string name="mock_provider_warning">In Entwickleroptionen als Mock-Standort-App auswählen</string>
+
+    <string name="metric_speed">Geschwindigkeit</string>
+    <string name="metric_course">Kurs</string>
+    <string name="metric_altitude">Höhe</string>
+    <string name="metric_error_radius">Geschätzter Fehlerradius</string>
+    <string name="metric_distance">Distanz</string>
+    <string name="metric_duration">Dauer</string>
+    <string name="metric_max_speed">Max. Geschw.</string>
+    <string name="metric_elevation_gain">Höhengewinn</string>
+    <string name="metric_barometer">Barometer aktiv</string>
+    <string name="metric_accel_alt">Beschleunigungshöhe (Geschätzt)</string>
+
+    <!-- Actions -->
+    <string name="btn_start">Aufzeichnung starten</string>
+    <string name="btn_stop">Stoppen &amp; Speichern</string>
+    <string name="btn_pause">Pausieren</string>
+    <string name="btn_resume">Fortsetzen</string>
+    <string name="btn_reanchor">Neu kalibrieren mit GPS</string>
+    <string name="btn_accept_fix_now">Aktuellen Fix jetzt übernehmen</string>
+    <string name="btn_center_map">Ansicht zentrieren</string>
+    <string name="btn_export">Route exportieren</string>
+    <string name="btn_delete">Löschen</string>
+    <string name="btn_rename">Umbenennen</string>
+    <string name="btn_details">Details anzeigen</string>
+    <string name="btn_calibrate_now">Kalibrierung starten</string>
+
+    <!-- Modes -->
+    <string name="mode_title">Fortbewegungsart</string>
+    <string name="mode_walking">Gehen (Hand/Tasche)</string>
+    <string name="mode_car">Auto (Feste Halterung)</string>
+    <string name="mode_bicycle_fixed">Fahrrad (Lenkerhalterung)</string>
+    <string name="mode_bicycle_loose">Fahrrad (Tasche/Rucksack)</string>
+    <string name="mode_transit_fixed">Bahn/Bus/Tram (Abgelegt)</string>
+    <string name="mode_transit_loose">Bahn/Bus/Tram (Tasche/Rucksack)</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_power_profile">Akkunutzung &amp; Sensorrate</string>
+    <string name="profile_max_accuracy">Maximale Genauigkeit (100Hz+, 5Hz Mock)</string>
+    <string name="profile_power_saving">Energiesparmodus (30Hz, 1Hz Mock)</string>
+    <string name="settings_test_mode">Testmodus (GNSS-Vergleich)</string>
+    <string name="settings_test_mode_desc">Zeichnet echtes GPS parallel auf (ohne Einfluss auf die Schätzung), um Drift und Fehlerradius objektiv zu prüfen.</string>
+    <string name="settings_mock_rate">Mock-Aktualisierungsrate</string>
+    <string name="settings_tile_import">Offline-Kartenkacheln</string>
+    <string name="settings_tile_import_desc">Ordner oder ZIP mit OpenStreetMap XYZ-Kacheln ({z}/{x}/{y}.png) für 100% offline Kartendarstellung importieren.</string>
+    <string name="settings_developer_options">Entwickleroptionen öffnen</string>
+
+    <!-- Map & Visualization -->
+    <string name="map_mode_vector">Vektor-Zeichnung</string>
+    <string name="map_mode_offline_tiles">Offline-Kachelkarte</string>
+    <string name="map_no_tiles_loaded">Keine Kacheln importiert. Zeige Vektorspur im Koordinatengitter.</string>
+    <string name="legend_start">Start</string>
+    <string name="legend_current">Aktuell (Schätzung)</string>
+    <string name="legend_gps">GPS-Referenz</string>
+
+    <!-- Calibration Screen -->
+    <string name="calib_title">Sensorkalibrierung</string>
+    <string name="calib_instructions">Legen Sie das Smartphone flach und unbewegt ab. Dies misst den Gyroskop-Nullpunkt und die Beschleunigungsskalierung zur Driftminimierung.</string>
+    <string name="calib_step_bias">Schritt 1: Ermittle statischen Gyro- &amp; Beschleunigungs-Bias…</string>
+    <string name="calib_step_done">Kalibrierung abgeschlossen &amp; gespeichert!</string>
+    <string name="calib_keep_still">Gerät stillhalten: noch %1$d s</string>
+
+    <!-- Evaluation & Test Mode -->
+    <string name="eval_title">Drift- &amp; Fehleranalyse</string>
+    <string name="eval_drift_over_time">Sensordrift über Zeit (m vs Sek)</string>
+    <string name="eval_drift_ratio">Drift im Verhältnis zur Wegstrecke</string>
+    <string name="eval_error_radius_coverage">Fehlerradius-Abdeckung</string>
+    <string name="eval_marked_test_recording">Testaufzeichnung (Mit GPS-Referenz)</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_name">Trägheitsnavigation</string>
+    <string name="notif_channel_desc">Aktive Trägheitsnavigation und Mock-Standort-Aktualisierungen</string>
+    <string name="notif_running_text">Navigation aktiv im Modus %1$s • Fehlerradius: ±%2$.0fm</string>
+</resources>
